@@ -6,6 +6,10 @@ using namespace std;
 
 int main()
 {
-    cout << "hello";
+    int variable = 8;
+    int *ptr;
+    ptr = &variable;
+    *ptr = 25;
+    cout << variable;
     return 0;
 }
