@@ -1,33 +1,49 @@
+
 #include <iostream>
+#include <map>
+#include <fstream>
+#include <string>
 #include <vector>
-#include <array>
-
 using namespace std;
-
-void print_contents(vector<int> &input)
-{
-    for (int i = 0; i < input.size(); i++)
-    {
-        cout << input[i] << endl;
-    }
-}
-
 int main()
 {
 
-    int size;
+    // word - list with lines where word occurs
+    map<string, vector<int>> dictionary;
 
-    cout << "Provide a size for your array: " << endl;
-    cin >> size;
+    ifstream input("lorem.txt");
 
-    vector<int> numbers;
-
-    for (int i = 0; i < size; i++)
+    if (input.is_open())
     {
-        numbers.push_back(i);
+
+        string word;
+        int line_number = 0;
+
+        while (getline(input, word))
+        {
+            if (dictionary.find(word) == dictionary.end())
+            {                                             // If reached the end of dict without finding a key
+                dictionary.insert({word, {line_number}}); // Add word to dictionary and line where it appears
+            }
+            else
+            {
+                dictionary[word].push_back(line_number); // Add the line number to the index
+            }
+            ++line_number;
+        }
     }
 
-    print_contents(numbers);
+    string tmp;
+
+    cout << "Choose a word: " << endl;
+    cin >> tmp;
+
+    cout << "The word " << tmp << " appears in lines:" << endl;
+
+    for (int i = 0; i < dictionary[tmp].size(); i++)
+    {
+        cout << dictionary[tmp][i] << endl;
+    }
 
     return 0;
 }
